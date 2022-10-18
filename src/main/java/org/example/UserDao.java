@@ -6,14 +6,14 @@ import java.sql.*;
 import java.util.Map;
 
 public class UserDao {
-    private SimpleConnectionMaker simpleConnectionMaker;
+    private ConnectionMaker connectionMaker;
     public UserDao(){
-        simpleConnectionMaker = new SimpleConnectionMaker();
+        this.connectionMaker = new AWSConnectionMaker();
     }
     public void add(User user) throws SQLException, ClassNotFoundException {
 
         //db접속
-        Connection c = simpleConnectionMaker.getConnection();
+        Connection c = connectionMaker.getConnection();
 
         //쿼리문 작성(insert)
         PreparedStatement ps = c.prepareStatement("INSERT INTO users(id, name, password) VALUES(?,?,?)");
@@ -37,7 +37,7 @@ public class UserDao {
     public User get(String id) throws ClassNotFoundException, SQLException {
 
         //db접속
-        Connection c = simpleConnectionMaker.getConnection();
+        Connection c = connectionMaker.getConnection();
 
         //쿼리문 작성(select)
         PreparedStatement ps = c.prepareStatement("SELECT id,name,password FROM users WHERE id = ?");
