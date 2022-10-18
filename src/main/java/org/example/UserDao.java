@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.Map;
 
 public class UserDao {
-    public void add() throws SQLException, ClassNotFoundException {
+    public void add(User user) throws SQLException, ClassNotFoundException {
 
         //환경 변수 불러오기
         Map<String, String> env = System.getenv();
@@ -22,13 +22,13 @@ public class UserDao {
 
         //쿼리문 작성(insert)
         PreparedStatement ps = c.prepareStatement("INSERT INTO users(id, name, password) VALUES(?,?,?)");
-        ps.setString(1, "1");
-        ps.setString(2, "YeonJae");
-        ps.setString(3, "1123");
+        ps.setString(1, user.getID());
+        ps.setString(2, user.getName());
+        ps.setString(3, user.getPassword());
 
         //status 확인하기
-        int status = ps.executeUpdate();
-        System.out.println(status);
+//        int status = ps.executeUpdate();
+//        System.out.println(status);
 
         //쿼리문 실행
         ps.executeUpdate();
@@ -72,8 +72,9 @@ public class UserDao {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         UserDao userDao = new UserDao();
-        User user = userDao.get("1");
-        System.out.println(user.getName());
+        userDao.add(new User("4","Ruru","1534qwer"));
+//        User user = userDao.get("1");
+//        System.out.println(user.getName());
 
     }
 }

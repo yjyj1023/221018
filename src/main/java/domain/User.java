@@ -15,4 +15,12 @@ public class User {
     public String getName(){
         return name;
     }
+
+    public String getID(){
+        return id;
+    }
+
+    public String getPassword(){
+        return password;
+    }
 }
