@@ -6,20 +6,14 @@ import java.sql.*;
 import java.util.Map;
 
 public class UserDao {
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Map<String, String> env = System.getenv();
-
-        //jdbc사용, 드라이버 로드
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        //db접속
-        Connection c = DriverManager.getConnection(env.get("DB_HOST"), env.get("DB_USER"), env.get("DB_PASSWORD"));
-        return c;
+    private SimpleConnectionMaker simpleConnectionMaker;
+    public UserDao(){
+        simpleConnectionMaker = new SimpleConnectionMaker();
     }
     public void add(User user) throws SQLException, ClassNotFoundException {
 
         //db접속
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.getConnection();
 
         //쿼리문 작성(insert)
         PreparedStatement ps = c.prepareStatement("INSERT INTO users(id, name, password) VALUES(?,?,?)");
@@ -43,7 +37,7 @@ public class UserDao {
     public User get(String id) throws ClassNotFoundException, SQLException {
 
         //db접속
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.getConnection();
 
         //쿼리문 작성(select)
         PreparedStatement ps = c.prepareStatement("SELECT id,name,password FROM users WHERE id = ?");
