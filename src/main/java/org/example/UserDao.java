@@ -10,6 +10,10 @@ public class UserDao {
     public UserDao(){
         this.connectionMaker = new AWSConnectionMaker();
     }
+    public UserDao(ConnectionMaker connectionMaker){
+        this.connectionMaker = new AWSConnectionMaker();
+    }
+
     public void add(User user) throws SQLException, ClassNotFoundException {
 
         //db접속
