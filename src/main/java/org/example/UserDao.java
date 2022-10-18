@@ -6,19 +6,20 @@ import java.sql.*;
 import java.util.Map;
 
 public class UserDao {
-    public void add(User user) throws SQLException, ClassNotFoundException {
-
-        //환경 변수 불러오기
+    private Connection getConnection() throws ClassNotFoundException, SQLException {
         Map<String, String> env = System.getenv();
-        String dbHost = env.get("DB_HOST");
-        String dbUser = env.get("DB_USER");
-        String dbPassword = env.get("DB_PASSWORD");
 
         //jdbc사용, 드라이버 로드
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         //db접속
-        Connection c = DriverManager.getConnection(dbHost, dbUser, dbPassword);
+        Connection c = DriverManager.getConnection(env.get("DB_HOST"), env.get("DB_USER"), env.get("DB_PASSWORD"));
+        return c;
+    }
+    public void add(User user) throws SQLException, ClassNotFoundException {
+
+        //db접속
+        Connection c = getConnection();
 
         //쿼리문 작성(insert)
         PreparedStatement ps = c.prepareStatement("INSERT INTO users(id, name, password) VALUES(?,?,?)");
@@ -41,17 +42,8 @@ public class UserDao {
 
     public User get(String id) throws ClassNotFoundException, SQLException {
 
-        //환경 변수 불러오기
-        Map<String, String> env = System.getenv();
-        String dbHost = env.get("DB_HOST");
-        String dbUser = env.get("DB_USER");
-        String dbPassword = env.get("DB_PASSWORD");
-
-        //jdbc사용, 드라이버 로드
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
         //db접속
-        Connection c = DriverManager.getConnection(dbHost, dbUser, dbPassword);
+        Connection c = getConnection();
 
         //쿼리문 작성(select)
         PreparedStatement ps = c.prepareStatement("SELECT id,name,password FROM users WHERE id = ?");
@@ -72,7 +64,7 @@ public class UserDao {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         UserDao userDao = new UserDao();
-        userDao.add(new User("4","Ruru","1534qwer"));
+        userDao.add(new User("7","Ruru","1534qwer"));
 //        User user = userDao.get("1");
 //        System.out.println(user.getName());
 
