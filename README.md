@@ -38,7 +38,6 @@ public class UserDao {
 
         //환경 변수 불러오기
         Map<String, String> env = System.getenv();
-	@@ -22,13 +22,13 @@ public void add() throws SQLException, ClassNotFoundException {
 
         //쿼리문 작성(insert)
         PreparedStatement ps = c.prepareStatement("INSERT INTO users(id, name, password) VALUES(?,?,?)");
